@@ -1,0 +1,63 @@
+extends layout
+
+block content
+  style.
+    .content {
+      margin-top: 20px;
+    }
+    .add-list-group{
+      float:right;
+    }
+    .add-list{
+      margin-bottom: 0;
+    }
+    .board-panel{
+      padding-left:20px;
+      margin-bottom:20px;
+    }
+    .board-title{
+      font-size:22px;
+    }
+    .card-title{
+      overflow:hidden;
+    }
+    .list-title{
+      margin: 0;
+    }
+    .list-card{
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    
+  .container-fluid 
+    .board-wrapper
+      .board
+        .board-panel
+          .row
+            a.board-title(href="/board/#{board._id}")=board.title
+            .col-sm-4.add-list-group
+              .input-group.form-group.add-list
+                input.form-control.new-list(type="text", name="list", placeholder="Add new list...")
+                input(type="hidden", name="board_id", value="#{board._id}")
+                span.input-group-btn
+                   button.btn.btn-primary.btn-list(type="button") Go!
+        .board-content
+          .card-columns       
+            if board.lists.length
+              each list in lists
+                .card.list
+                  .card-header
+                    .card-title.list-title=list.title
+                  .card-block
+                    .list-content
+                       if list.cards.length
+                        each card in list.cards
+                          .list-card.btn-primary.form-control
+                            .list-card-title=card.title
+                      .add-card-group
+                        .input-group.form-group.add-card
+                          input.form-control.new-card(type="text", name="card", placeholder="Add new card...")
+                          input(type="hidden", name="list_id", value="#{list._id}")
+                          span.input-group-btn
+                             button.btn.btn-primary.btn-add-card(type="button")
+                              i.fa.btn-xs.fa-pencil-square-o

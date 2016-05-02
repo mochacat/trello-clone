@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  .container-fluid
+    .row
+        p.lead My Boards
+    .card-columns
+      each board in boards
+        .card.card-block(style="min-height:136px")
+          h4.card-title
+            a(href="/board/#{board._id}")=board.title
+          h6.card-subtitle.text-muted=board.description
+      .card.card-block.card-inverse.text-xs-center(style="background-color: #333; border-color: #333;")
+        h4.card-title Create a New Board
+        p.card-text
+          button.btn.btn-primary(data-toggle="modal", data-target="#boardModal")
+            i.fa.btn-xs.fa-plus
+          .modal.fade#boardModal(tabindex="-1", role="dialog", aria-labelledby="boardModalLabel")
+            .modal-dialog(role="document")
+              .modal-content
+                .modal-header
+                  button.close(type="button", data-dismiss="modal", aria-label="Close")
+                    span(aria-hidden="true") &times;
+                  h4.modal-title#boardModalLabel Create a new board
+                .modal-body
+                  form.form-horizontal#createBoard(method="POST")
+                    .form-group
+                      label.col-sm-2.control-label(for='title') Title
+                      .col-sm-8
+                        input#title.form-control(type='text', name='title', value='')
+                    .form-group
+                      label.col-sm-2.control-label(for='description') Description
+                      .col-sm-8
+                        input#description.form-control(type='description', name='description', value='')
+                    .form-group
+                      .col-sm-offset-2.col-sm-8
+                        button.btn.btn-primary(type='submit')
+                          i.fa.btn-xs.fa-list-alt
+                          |  Submit
+                  

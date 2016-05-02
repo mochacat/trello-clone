@@ -1,0 +1,11 @@
+.idea
+coverage
+
+#npm
+node_modules
+*.log
+*.gz
+
+# Linux
+.directory
+*~
