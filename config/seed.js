@@ -71,9 +71,10 @@ var seeder = function(){
       })
       .then( () => {
         
-        var cards = [{
+        var cards = [
+        {
           title: 'Research Question',
-          description: 'How can I get 1000 subscribers in 60 days?'
+          description: 'How can I get 1000 subscribers?'
         },
         {
           title: 'Experiment',
@@ -82,7 +83,8 @@ var seeder = function(){
         {
           title: 'Draw Conclusion',
           description: 'Document main learnings and results'
-        }];
+        }
+        ];
         
         const board = new Board({
           title: 'Brainstorm Board',
@@ -98,9 +100,19 @@ var seeder = function(){
             cards: cards
           });
           
-          list.save(err => {
-            if (err) {
-              console.log(err);
+          list.save(list => {
+            //push newly created list to board
+            if (list !== null){
+              Board.findOneAndUpdate(
+                { _id : list._board },
+                { $push: { lists : list._id } },
+                { new: true, upsert: false},
+                function(err){
+                  if (err) {
+                    console.log(err);
+                  }
+                }
+              );
             }
           })
         });
