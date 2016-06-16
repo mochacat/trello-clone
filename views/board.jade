@@ -1,34 +1,7 @@
 extends layout
 
 block content
-  style.
-    .content {
-      margin-top: 20px;
-    }
-    .add-list-group{
-      float:right;
-    }
-    .add-list{
-      margin-bottom: 0;
-    }
-    .board-panel{
-      padding-left:20px;
-      margin-bottom:20px;
-    }
-    .board-title{
-      font-size:22px;
-    }
-    .card-title{
-      overflow:hidden;
-    }
-    .list-title{
-      margin: 0;
-    }
-    .list-card{
-      border-radius: 4px;
-      margin-bottom: 20px;
-    }
-    
+  link(rel='stylesheet', href='/site/css/board.css')
   .container-fluid 
     .board-wrapper
       .board

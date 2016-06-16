@@ -100,20 +100,18 @@ var seeder = function(){
             cards: cards
           });
           
-          list.save(list => {
-            //push newly created list to board
-            if (list !== null){
-              Board.findOneAndUpdate(
-                { _id : list._board },
-                { $push: { lists : list._id } },
-                { new: true, upsert: false},
-                function(err){
-                  if (err) {
-                    console.log(err);
-                  }
+          list.save((err,list) => {
+
+            Board.findOneAndUpdate(
+              { _id : list._board },
+              { $push: { lists : list._id } },
+              { new: true, upsert: false},
+              function(err){
+                if (err) {
+                  console.log(err);
                 }
-              );
-            }
+              }
+            );
           })
         });
       })
