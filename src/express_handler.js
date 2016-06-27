@@ -49,7 +49,7 @@ function RouterReduxComponent(Server, url, state){
   let string = ''
 
   match({ routes: Server.routes, location: url }, (err, redirect, renderProps) => {
-    let store = createStore(Server.rootReducer, Server.data)
+    let store = createStore(Server.rootReducer, state)
 
     const routerElement = React.createElement(RouterContext, renderProps)
     const providerElement = React.createElement(Provider,{store}, routerElement)
