@@ -1,0 +1,7 @@
+export const TOGGLE_PIN = 'TOGGLE_PIN'
+export const ADD_BOARD = 'ADD_BOARD'
+export const REMOVE_BOARD = 'REMOVE_BOARD'
+export const EDIT_BOARD = 'EDIT_BOARD'
+export const ADD_LIST = 'ADD_LIST'
+export const REMOVE_LIST = 'REMOVE_LIST'
+export const EDIT_LIST = 'EDIT_LIST'
