@@ -3,6 +3,7 @@ import React from 'react'
 import NavSection from './NavSection'
 
 import '../assets/application.scss'
+//import '../containers/assets/app.css'
 
 export default class Main extends React.Component{
   
