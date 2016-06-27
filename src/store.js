@@ -5,10 +5,7 @@ import { boards, lists } from './data'
 import rootReducer from './reducers/index'
 
 //starting state
-const defaultState = {
-  boards,
-  lists
-}
+const defaultState = window.__INITIAL_STATE
 
 const enhancers = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f

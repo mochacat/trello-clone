@@ -1,7 +1,6 @@
 const routes = require('./routes'),
-  rootReducer = require('./reducers'),
-  data = require('./data')
+  rootReducer = require('./reducers')
 
 module.exports = {
-  routes, rootReducer, data
+  routes, rootReducer
 }
