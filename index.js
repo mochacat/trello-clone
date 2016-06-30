@@ -68,7 +68,7 @@ app.get('/', function(req,res){
       _id: 1,
       _list: 1,
       title: 'CSS styling',
-      description: 'making style decisins'
+      description: 'making style decisions'
     },
     {
       _id: 2,

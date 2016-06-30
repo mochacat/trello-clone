@@ -18,7 +18,6 @@ export default function boards(state = initialState, action) {
       return [...state, action.board]
     }
     case REMOVE_BOARD: {
-      //TODO need to remove lists & cards as well
       const i = state.findIndex(board => board._id === action.boardId)
       return [
         ...state.slice(0,i),

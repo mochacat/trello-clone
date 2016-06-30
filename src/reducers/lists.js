@@ -8,7 +8,6 @@ export default function lists(state = initialState, action) {
       return [...state, action.list]
     }
     case REMOVE_LIST: {
-      //need to remove list and all cards with list
       const i = state.findIndex(list => list._id === action.listId)
       return [
         ...state.slice(0,i),
