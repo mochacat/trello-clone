@@ -1,15 +1,15 @@
-import * as types from '../src/constants/actionTypes'
+import * as types from '../constants/actionTypes'
 
 /*
  * Boards
  */
-
 export function togglePin(boardId) {
   return {
     type: types.TOGGLE_PIN,
     boardId
   }
 }
+
 
 export function addBoard(board){
   return {
@@ -49,7 +49,7 @@ export function removeList(listId){
   }
 }
 
-export function editist(list){
+export function editList(list){
   return {
     type: types.EDIT_LIST,
     list

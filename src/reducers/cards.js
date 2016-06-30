@@ -6,14 +6,6 @@ const initialState = []
 
 export default function cards(state = initialState, action) {
   switch(action.type) {
-    case TOGGLE_PIN: {
-      const i = state.findIndex(card => card._id === action.cardId)
-      return [
-        ...state.slice(0,i),
-        {...state[i], pinned: !state[i].pinned},
-        ...state.slice(i+1)
-      ]
-    }
     case ADD_CARD: {
       return [...state, action.card]
     }

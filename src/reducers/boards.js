@@ -8,6 +8,7 @@ export default function boards(state = initialState, action) {
   switch(action.type) {
     case TOGGLE_PIN: {
       const i = state.findIndex(board => board._id === action.boardId)
+      console.log(state)
       return [
         ...state.slice(0,i),
         {...state[i], pinned: !state[i].pinned},
