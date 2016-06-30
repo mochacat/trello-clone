@@ -1,4 +1,7 @@
 "use strict"
+require('babel-register')
+require('babel-polyfill')
+
 const app = require('./bootstrap'),
   controllers = require('./controllers'),
   Board = require('./models/Board'),
