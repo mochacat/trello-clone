@@ -1,7 +1,9 @@
 "use strict"
 const app = require('./bootstrap'),
   controllers = require('./controllers'),
-  models = require('./models'),
+  Board = require('./models/Board'),
+  List = require('./models/List'),
+  Card = require('./models/Card'),
   passport = require('./config/passport'),
   kube = require('kube')
 

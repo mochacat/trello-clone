@@ -1,15 +1,11 @@
-var mongoose = require('mongoose');
+"use strict"
 
-var cardSchema = new mongoose.Schema({
-  title: String,
-  description: String
-});
+const mongoose = require('mongoose');
 
-var listSchema = new mongoose.Schema({
-  _board: {type: mongoose.Schema.Types.ObjectId},
+const listSchema = new mongoose.Schema({
+  _board: Number,
   title: String,
   description: String,
-  cards: [cardSchema]
 });
 
 module.exports = mongoose.model('list', listSchema)
