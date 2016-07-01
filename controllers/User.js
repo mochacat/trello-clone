@@ -1,12 +1,9 @@
-const router = require('koa-router')({ prefix: '/user' })
-const User = require('../models/User'),
-  _ = require('lodash'),
-  passport = require('../config/passport')
+const router = require('express').Router(),
+  User = require('../models/User'),
+  _ = require('lodash');
 
-router.use(passport.isAuthenticated)
-
-router.get('/account', function (ctx, next) {
-  var user = ctx.req.user
+router.get('/account', function(req,res){
+  var user = req.user
 
   var providers = {
     twitter: false,
@@ -14,53 +11,59 @@ router.get('/account', function (ctx, next) {
     instagram: false,
     github: false,
     google: false
-  }
-
-  user.providers.forEach(function (p) {
-    if (providers[p.name] !== 'undefined') {
-      providers[p.name] = true
+  };
+  
+  user.providers.forEach(function(p){
+    if (providers[p.name] !== "undefined"){ 
+      providers[p.name] = true;
     }
   })
-
-  ctx.render('account', { user, providers })
+  
+  res.render('account', { user, providers } )
 })
 
-router.post('/account', async (ctx, next) => {
-  const { name, email } = ctx.request.body
+router.post('/account', function(req,res,next){
+  const body = req.body;
+  var name = body.name ? body.name : req.user.name;
+  var email = body.email ? body.email : req.user.email;
 
-  ctx.checkBody('email', 'Email is not valid').isEmail()
+  if (body.email)
+    req.assert('email', 'Email is not valid').isEmail();
+  
+  const errors = req.validationErrors();
 
-  if (ctx.errors) {
-    ctx.flash('errors', ctx.errors)
-    return ctx.redirect('/user/account')
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/user/account');
   }
 
-  ctx.req.user.profile.name = name
-  ctx.req.user.email = email
-
-  try {
-    let saved = await ctx.req.user.save()
-    ctx.flash('success', { msg: 'Success! Account updated!' })
-    return ctx.redirect('/user/account')
-  } catch (e) {
-    ctx.flash('errors', { msg: 'Error: Could not update.' })
-    return ctx.redirect('/user/account')
-  }
+  User.update({_id: req.user._id}, { profile : {name: name}, email : email}, function(err,doc){
+    if (err){
+      req.flash('errors', {msg: 'Error: Could not update.'});
+      return res.redirect('/user/account');
+    } else {
+      req.flash('success', { msg: 'Success! Account updated!' });
+      return res.redirect('/user/account')
+    }
+  })    
 })
 
-router.get('/account/unlink/:provider', async (ctx, next) => {
-  const user = ctx.req.user
-  const provider = ctx.params.provider
-  const providers = _.filter(user.providers, function (p) {
-    return p.name !== provider
-  })
+router.get('/account/unlink/:provider', function(req, res, next){
+  var user = req.user, provider = req.params.provider;
 
-  user.providers = providers
+  var providers = _.filter(user.providers, function(p){
+    return p.name !== provider;
+  });
+    
+  User.update({_id: user._id},{providers: providers},function(err){
 
-  let saved = await user.save()
-
-  ctx.flash('success', { msg: provider + ' account has been unlinked.' })
-  ctx.redirect('/user/account')
+    if (err){
+      return next(err)
+    }
+    req.flash('success', { msg: provider + ' account has been unlinked.' })
+    res.redirect('/user/account');
+  });
+    
 })
 
 module.exports = router
