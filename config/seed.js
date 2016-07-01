@@ -1,140 +1,177 @@
-"use strict"
+'use strict'
 const User = require('../models/User'),
-  Board = require('../models/Board'),
-  List = require('../models/List'),
   Post = require('../models/Post'),
   Project = require('../models/Project'),
   Product = require('../models/Product'),
-  async = require("async"),
+  Board = require('../models/Board'),
+  List = require('../models/List'),
+  Card = require('../models/Card'),
+  async = require('async'),
   db = require('mongoose').connection
-
 
 //this seeder automatically runs on application startup but ...
 //seeder only runs if a user without admin role exists
+var Seeder = function () {
+  return clearDb()
+    .then(() => User.findOne({ role: 'admin' }))
+    .then(user => {
+      if (user) throw new Error(user)
 
-var seeder = function(){
-  return clearDb().then( () => {
-    return User.findOne({role:'admin'})
-      .then( user => {
-        if(user) throw new Error(user)
-
-        const seed_user = new User({
-          email: 'admin@admin.com',
-          password: 'asdfasdf',
-          role: 'admin',
-          askEmail: false,
-          profile: {
-            name: 'Admin'
-          }
-        });
-
-        return seed_user.save()
-      } )
-      .then( user => {
-        const seed_post = new Post({
-          title: 'First Blog Post',
-          content: "# Sample Post H1\r\n\r\nThis is a sample post written in markdown. __Markdown on Save Improved__ will ensure that when this post is saved, it will retain its syntax.\r\n\r\n## Markdown Items (H2)\r\n\r\nWriting Markdown is extremely simple, but incase you have problems you can read about the syntax of Markdown [here](http://daringfireball.net/projects/markdown/syntax \"Markdon: Syntax\"), or read a useful cheat sheet [here](http://support.mashery.com/docs/customizing\\_your\\_portal/Markdown\\_Cheat\\_Sheet \"Markdown Cheat Sheet\")\r\n\r\n### Lists\r\n\r\n#### Unordered\r\n\r\n- An unordered list is super simple.\r\n- Just use a dash, esterisk, or plus sign.\r\n* You can even mix and match.\r\n+ Not that you would want to.\r\n\r\n#### Ordered\r\n\r\n1. Numbers.\r\n2. Just numbers.\r\n3. As simple as that.\r\n\r\n#### Definition List\r\n\r\nList Defined\r\n: A number of connected items or names written or printed consecutively, typically one below the other.\r\nItem Defined\r\n: An individual article or unit, esp. one that is part of a list, collection, or set.\r\n\r\n### Emphasis\r\n\r\n#### Italic\r\n\r\n_Italicising text_ is easy and can be *done* a couple of different ways.\r\n\r\n#### Bold\r\n\r\n__Bolding text__ is also easy and can be **done** a couple of different ways as well.\r\n\r\n### Escaping\r\n\r\nEscaping some symbols is required to make sure that Markdown doesn't interpret them as one of its own. These characters include \\\\`\\*\\_\\{\\}\\[\\]\\(\\)\\#\\+\\-\\.\\!\\:\\|\r\n\r\n<small>Note: The good thing about markdown is that it also supports standard HTML. Oh, and you don't have to escape periods all of the time. So you ended a sentence with, \"in 1984 PERIOD\". Well, you would want to escape that period, like \"in 1984\\.\" so that Markdown doesn't interpret this as a list item.</small>",
-          status: 'launched',
-          _author: user._id,
-        })
-
-        return seed_post.save()
-      })
-      .then( post => {
-        const hackathon_project = new Project({
-          name: 'hackathon starter lite',
-          tag_line: 'create your personal project',
-          description: 'jump start your project with an admin, blog, products',
-          logo_url: '/site/img/logo.svg',
-          project_url: 'https://github.com/uptownhr/hackathon-starter-lite'
-        })
-
-        const honeybadger_project = new Project({
+      return new User({
+        email: 'admin@admin.com',
+        password: 'asdfasdf',
+        role: 'admin',
+        askEmail: false,
+        profile: {
+          name: 'Admin'
+        }
+      }).save()
+    })
+    .then(user=> new Post({
+        title: 'First Blog Post',
+        content: '# Sample Post H1\r\n\r\nThis is a sample post written in markdown.' +
+        ' __Markdown on Save Improved__ will ensure that when this post is saved, ' +
+        'it will retain its syntax.\r\n\r\n## Markdown Items (H2)\r\n\r\nWriting Markdown is ' +
+        'extremely simple, but incase you have problems you can read about the syntax of ' +
+        'Markdown [here](http://daringfireball.net/projects/markdown/syntax "Markdon: Syntax"), ' +
+        'or read a useful cheat sheet [here]' +
+        '(http://support.mashery.com/docs/customizing\\_your\\_portal/Markdown\\_Cheat\\_Sheet ' +
+        '"Markdown Cheat Sheet")\r\n\r\n### Lists\r\n\r\n#### Unordered\r\n\r\n- ' +
+        'An unordered list is super simple.\r\n- Just use a dash, esterisk, or plus sign.\r\n* ' +
+        'You can even mix and match.\r\n+ Not that you would want to.\r\n\r\n#### ' +
+        'Ordered\r\n\r\n1.Numbers.\r\n2. Just numbers.\r\n3. As simple as that.\r\n\r\n#### ' +
+        'Definition List\r\n\r\nListDefined\r\n: A number of connected items or names written ' +
+        'or printed consecutively, typically one below the other.\r\nItem Defined\r\n: ' +
+        'An individual article or unit, esp. one that is part of a list, collection, ' +
+        'or set.\r\n\r\n### Emphasis\r\n\r\n#### Italic\r\n\r\n_Italicising text_ ' +
+        'is easy and can be *done* a couple of different ways.\r\n\r\n#### ' +
+        'Bold\r\n\r\n__Bolding text__ is also easy and can be **done** a couple of different ' +
+        'ways as well.\r\n\r\n### Escaping\r\n\r\nEscaping some symbols is required to make ' +
+        'sure that Markdown doesnt interpret them as one of its own. These characters  ' +
+        'include \\\\`\\*\\_\\{\\}\\[\\]\\(\\)\\#\\+\\-\\.\\!\\:\\|\r\n\r\n<small>Note: ' +
+        'The good thing about markdown is that it also supports standard HTML. Oh, and you ' +
+        "don't have to escape periods all of the time. So you ended a sentence with, " +
+        '"in 1984 PERIOD". Well, you would want to escape that period, like "in 1984\\." ' +
+        "so that Markdown doesn't interpret this as a list item.</small>",
+        status: 'launched',
+        _author: user._id,
+      }).save())
+    .then(post => new Project({
+        name: 'hackable',
+        tag_line: 'create your personal project',
+        description: 'jump start your project with an admin, blog, products',
+        logo_url: '/site/img/hackable-logo.png',
+        project_url: 'https://github.com/uptownhr/hackable'
+      }).save().then(() => new Project({
           name: 'honeybadger',
           tag_line: 'A hackathon starter built for simplicity',
-          description: 'Creating Honeybadger, an opensource Ruby/Sinatra based CMS that helps you kickstart projects. It provides a boiler-plate code with the goal of being an extremely simple CMS alternative to Wordpress, Drupa, and etc.',
+          description: 'Creating Honeybadger, an opensource Ruby/Sinatra based CMS ' +
+          'that helps you kickstart projects. It provides a boiler-plate code with the' +
+          ' goal of being an extremely simple CMS alternative to Wordpress, Drupa, ' +
+          'and etc.',
           logo_url: '/site/img/logo.svg',
           project_url: 'https://github.com/jaequery/honeybadger'
-        })
-
-        return hackathon_project.save().then( () => honeybadger_project.save() )
-      })
-      .then( () => {
-        const sample_product = new Product({
-          name: 'Sample Product',
-          description: 'This is a sample product',
-          price: '99.99',
-          image_url: 'http://www.anchorpackaging.com/wp-content/uploads/2014/06/SampleKit.jpg'
-        })
-
-        return sample_product.save()
-      })
-      .then( () => {
-        
-        var cards = [
+        }).save()
+      )
+    )
+    .then(() => new Product({
+        name: 'Sample Product',
+        description: 'This is a sample product',
+        price: '99.99',
+        image_url: 'http://www.anchorpackaging.com/wp-content/uploads/2014/06/SampleKit.jpg'
+      }).save()
+    )
+    .then(() => Board.create([
+      {
+        title: 'Trello Project',
+        description : 'keeping track of redux',
+        pinned: true
+      },
+      {
+        title: 'Social Good',
+        description : 'problems I need to solve',
+        pinned: false
+      },
+      {
+        title: 'Chores',
+        description : 'weekly chore list',
+        pinned: false
+      },
+      {
+        title: 'Meetings',
+        description : 'meetings I have or will attend',
+        pinned: false
+      }
+      ])
+    )
+    .then(() => List.create([
         {
-          title: 'Research Question',
-          description: 'How can I get 1000 subscribers?'
+          _board: 1,
+          title: 'Todo'
         },
         {
-          title: 'Experiment',
-          description: 'Set up A/B testing'
+          _board: 1,
+          title: 'Doing'
         },
         {
-          title: 'Draw Conclusion',
-          description: 'Document main learnings and results'
+          _board: 1,
+          title: 'Done'
+        },
+        {
+          _board: 2,
+          title: 'Disability Advocacy'
+        },
+        {
+          _board: 2,
+          title: 'Volunteering'
         }
-        ];
-        
-        const board = new Board({
-          title: 'Brainstorm Board',
-          description: 'Come up with marketing plan!',
-          lists: [],
-        })
-        
-        return board.save().then( board => {
-          var list = new List({
-            _board: board._id,
-            title: 'TODO',
-            description: 'Things that need to be done',
-            cards: cards
-          });
-          
-          list.save((err,list) => {
-
-            Board.findOneAndUpdate(
-              { _id : list._board },
-              { $push: { lists : list._id } },
-              { new: true, upsert: false},
-              function(err){
-                if (err) {
-                  console.log(err);
-                }
-              }
-            );
-          })
-        });
-      })
-      .catch( err => err )
-  })
+      ])
+    )
+    .then(() => Card.create([
+        {
+          _list: 1,
+          title: 'CSS styling',
+          description: 'making style decisions'
+        },
+        {
+          _list: 1,
+          title: 'Build API for calls to db',
+          description: 'should I use hackable or kube'
+        },
+        {
+          _list: 1,
+          title: 'Build React Components',
+          description: 'build lists, boards, '
+        },
+        {
+          _list: 1,
+          title: 'Build Login page',
+          description: 'make sure user is authenticated, otherwise create account'
+        },
+        {
+          _list: 2,
+          title: 'Writing the Actions and Reducers',
+          description: 'Taking care of the state before React Components'
+        }
+    ]))
+    .catch(err => console.log(err))
 }
 
-
 //only clear db if test
-function clearDb(){
+function clearDb() {
   const test = process.env.TEST;
 
-  return new Promise( (resolve, reject) => {
-    if(!test) return resolve()
+  return new Promise((resolve, reject) => {
+    if (!test) return resolve()
 
-    for(var i in db.collections){
+    for (var i in db.collections) {
       db.collections[i].remove()
     }
 
-    setTimeout( function(){
+    setTimeout(function () {
       resolve()
     }, 500)
   })
 }
 
-module.exports = new seeder()
+module.exports = new Seeder()
