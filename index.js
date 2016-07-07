@@ -25,9 +25,8 @@ app.get('/', function(req,res){
   });
 })
 
-
-/*app.use('/', controllers.Home)
 app.use('/board', controllers.Board)
+/*
 app.use('/blog', controllers.Post)
 app.use('/auth', controllers.Auth)
 app.use('/user', passport.isAuthenticated, controllers.User)

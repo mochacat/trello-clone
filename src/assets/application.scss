@@ -9,6 +9,7 @@ $lobster-font-family: 'Lobster', serif;
 /* color scheme */
 $red: #FF0000;
 $dark-grey: rgb(51, 51, 51);
+$grey: rgb(113, 113, 113);
 $light-grey: rgb(241, 241, 241);
 
 $sky-blue: #1CA8DD;
@@ -17,7 +18,7 @@ $blue: #0D66B6;
 body {
   margin:0;
   font-family: $main-font-family;
-  color: rgb(113, 113, 113);
+  color: $grey;
 }
 
 h1 {
@@ -113,13 +114,14 @@ $desktop: "(min-width: 1024px)";
 }
 
 $board-height : 136px;
+$board-width: 175px;
 
 @mixin board-box($color) {
   position: relative;
   display: inline-block;
   vertical-align: top;
   height: $board-height;
-  width: 175px;
+  width: $board-width;
   margin: 10px;
   padding: 20px;
   background: $color;
@@ -134,14 +136,21 @@ $board-height : 136px;
   @include board-box($light-grey)
 }
 
-.board-section-header {
+@mixin board-section-header(){
   margin-bottom: 10px;
   font-size: 18px;
   overflow: hidden;
 }
+.board-section-header {
+  @include board-section-header
+}
+
+@mixin board-section-content() {
+  font-size:15px;
+}
 
 .board-section-content {
-  font-size:15px;
+  @include board-section-content
 }
 
 .board-section-tack {
@@ -152,6 +161,7 @@ $board-height : 136px;
 
 .board-section-tack:hover{
   color: $red;
+  cursor: pointer;
 }
 
 .create-board-section {
@@ -164,34 +174,59 @@ $board-height : 136px;
   margin-top: ($board-height / 2) - 12px; 
 }
 
+.plus:hover{
+  cursor: pointer;
+  color: white;
+}
+
 .pinned {
- color: $red; 
+ color: $red;
 }
 
-/*
-.add-list-group{
-    float:right;
-}
-.add-list{
-    margin-bottom: 0;
+//NEW BOARD
+
+button {
+  transition: all 0.3s ease-in-out;
+  width: $board-width;
+  margin-top: 50px;
 }
 
-
-.board-panel{
-    padding-left:20px;
-    margin-bottom:20px;
-}
-.board-title{
-    font-size:22px;
-}
-.card-title{
-    overflow:hidden;
-}
-.list-title{
+input {
+  display: block;
+  border: none;
+  width: $board-width - 20px;
+  background-color: rgba(255,255,255,0);
+  font-style: italic;
+  .board-section-header & {
+    @include board-section-header
+    color: $sky-blue;
     margin: 0;
+  }
+  .board-section-content & {
+    @include board-section-content
+    color: $grey;
+    padding-bottom: 10px;
+  }
+  &:focus, &:valid {
+    box-shadow: none;
+    outline: none;
+    background-position: 0 0;
+    &::-webkit-input-placeholder {
+      visibility: visible !important;
+    }
+  }
 }
-.list-card{
-    border-radius: 4px;
-    margin-bottom: 20px;
+
+button {
+  border: none;
+  background: $sky-blue;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 6px;
+  color: white;
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,0.2);
+  &:hover { 
+    transform: translateY(-3px);
+    box-shadow: 0 6px 6px 0 rgba(0,0,0,0.2);
+  }
 }
-*/

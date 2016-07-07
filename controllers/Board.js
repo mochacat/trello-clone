@@ -1,8 +1,7 @@
-const router = require('express').Router();
-var Board = require('../models/Board'),
-    List = require('../models/List');
+const router = require('express').Router(),
+    { Board, List, Card } = require('../models')
 
-router.get('/:id', function(req, res){
+/*router.get('/:id', function(req, res){
   
   Board.findOne({_id: req.params.id}, function(err, board){
     if (err || board === null) {
@@ -17,7 +16,7 @@ router.get('/:id', function(req, res){
       })
     }
   });
-})
+})*/
 
 router.post('/', function(req, res){
   var body = req.body;
@@ -25,28 +24,28 @@ router.post('/', function(req, res){
   req.assert('title', 'Title field is required').notEmpty();
   
   var errors = req.validationErrors();
-
+  
   if (errors) {
-    res.send({errors: errors});
+    res.status(400).send(errors)
   } else {
   
     var board = new Board({
       title : body.title,
-      description: body.description,
-    });
+      description: body.description
+    })
 
     board.save(function(err, board){
       if (err) {
-        console.log(err);
+        res.status(500).send('Something went wrong')
       }
+      
       res.send({
-        errors : '',
-        redirect: '/board/' + board._id
-      });
+        board
+      })
     })
   }
 })
-
+/*
 router.post('/:board/list', function(req, res){
   var body = req.body;
   
@@ -108,6 +107,6 @@ router.post('/:board/list/:list/card', function(req, res){
       }
     );
   }
-});
+});*/
 
 module.exports = router

@@ -1,7 +1,6 @@
 import { createStore, compose } from 'redux'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { browserHistory } from 'react-router'
-import { boards, lists } from './data'
 import rootReducer from './reducers/index'
 
 //starting state
