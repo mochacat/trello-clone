@@ -121,12 +121,13 @@ class BoardGrid extends React.Component {
               })}
               {this.state.newBoard ?
                 <Board
-                {...this.props}
-                handleSubmit={this.handleSubmit}
-                handleTitleChange={this.handleTitleChange}
-                handleDescriptionChange={this.handleDescriptionChange}
-                key="newBoard"/> :
-                null}
+                  {...this.props}
+                  handleSubmit={this.handleSubmit}
+                  handleTitleChange={this.handleTitleChange}
+                  handleDescriptionChange={this.handleDescriptionChange}
+                  key="newBoard"/> :
+                null
+              } 
               <div className="create-board-section">
                 <div className="create-board">
                   <a onClick={this.handleClick}>

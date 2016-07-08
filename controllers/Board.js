@@ -18,18 +18,18 @@ const router = require('express').Router(),
   });
 })*/
 
-router.post('/', function(req, res){
-  var body = req.body;
+router.post('/', (req, res) => {
+  const body = req.body;
 
   req.assert('title', 'Title field is required').notEmpty();
   
-  var errors = req.validationErrors();
+  const errors = req.validationErrors();
   
   if (errors) {
     res.status(400).send(errors)
   } else {
   
-    var board = new Board({
+    const board = new Board({
       title : body.title,
       description: body.description
     })
@@ -45,6 +45,33 @@ router.post('/', function(req, res){
     })
   }
 })
+
+router.post('/:id', (req, res) => {
+  const board = req.body
+
+  req.assert('title', 'Title field is required').notEmpty();
+  const errors = req.validationErrors();
+
+  if (errors) {
+    res.status(400).send(errors)
+  } else {
+  
+    Board.findOneAndUpdate(
+      { _id : req.params.id },
+      board ,
+      { new: true, upsert: false},
+      function(err, board){
+        if (err) {
+          console.log(err)
+          res.sendStatus(500)
+        } else {
+          res.send(board)
+        }
+      }
+    )
+  }
+})
+
 /*
 router.post('/:board/list', function(req, res){
   var body = req.body;
