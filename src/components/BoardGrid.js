@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Link } from 'react-router'
 
 import Board from './Board.js'
@@ -49,6 +48,7 @@ class BoardGrid extends React.Component {
         })
     
       const boardData = await response.json()
+      
       if (response.status == 200){
         //handle success by dispatching action
         addBoard(boardData.board)

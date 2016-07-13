@@ -81,7 +81,7 @@ var Seeder = function () {
         image_url: 'http://www.anchorpackaging.com/wp-content/uploads/2014/06/SampleKit.jpg'
       }).save()
     )
-    .then(() => Board.create([
+    .then(() =>  { return Board.create([
       {
         title: 'Trello Project',
         description : 'keeping track of redux',
@@ -103,53 +103,54 @@ var Seeder = function () {
         pinned: false
       }
       ])
-    )
-    .then(() => List.create([
+    })
+    .then((boards) => {
+      return List.create([
         {
-          _board: 1,
+          _board: boards[0]._id,
           title: 'Todo'
         },
         {
-          _board: 1,
+          _board:  boards[0]._id,
           title: 'Doing'
         },
         {
-          _board: 1,
+          _board:  boards[0]._id,
           title: 'Done'
         },
         {
-          _board: 2,
+          _board: boards[1]._id,
           title: 'Disability Advocacy'
         },
         {
-          _board: 2,
+          _board: boards[1]._id,
           title: 'Volunteering'
         }
       ])
-    )
-    .then(() => Card.create([
+    })
+    .then((lists) => Card.create([
         {
-          _list: 1,
+          _list: lists[0]._id,
           title: 'CSS styling',
           description: 'making style decisions'
         },
         {
-          _list: 1,
+          _list: lists[0]._id,
           title: 'Build API for calls to db',
           description: 'should I use hackable or kube'
         },
         {
-          _list: 1,
+          _list: lists[0]._id,
           title: 'Build React Components',
           description: 'build lists, boards, '
         },
         {
-          _list: 1,
+          _list: lists[0]._id,
           title: 'Build Login page',
           description: 'make sure user is authenticated, otherwise create account'
         },
         {
-          _list: 2,
+          _list: lists[1]._id,
           title: 'Writing the Actions and Reducers',
           description: 'Taking care of the state before React Components'
         }
