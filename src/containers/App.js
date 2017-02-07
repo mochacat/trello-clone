@@ -6,7 +6,8 @@ import Main from '../components/Main'
 function mapStateToProps(state) {
   return {
     boards: state.boards,
-    lists: state.lists
+    lists: state.lists,
+    cards: state.cards
   }
 }
 

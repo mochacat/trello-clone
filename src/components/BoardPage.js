@@ -3,12 +3,8 @@ import { Link } from 'react-router'
 import List from './List'
 
 class BoardPage extends React.Component {
-  constructor(props){
-    super(props)
-    this.board = this.props.boards.find( board => board._id == this.props.params.id)
-  }
-  
   render(){
+    this.board = this.props.boards.find( board => board._id == this.props.params.id)
     
     return (
       <div className="container">
