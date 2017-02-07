@@ -11,7 +11,7 @@ export default class Main extends React.Component{
     return (
       <div className="page-wrapper">
         <NavSection />
-        <div className="content">
+        <div id="content">
           { React.cloneElement(
               this.props.children,
               { ...this.props }

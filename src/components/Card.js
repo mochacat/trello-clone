@@ -1,15 +1,11 @@
 import React from 'react'
 
 class Card extends React.Component {
-
-  constructor(props){
-    super(props)
-    this.card = this.props.card
-  }
   
   render(){
+    this.card = this.props.card
     return (
-      <div>
+      <div className="list-card">
         <p>{this.card.title}</p>
       </div>
     )
