@@ -26,6 +26,8 @@ app.get('/', function(req,res){
 })
 
 app.use('/board', controllers.Board)
+app.use('/list', controllers.List)
+
 /*
 app.use('/blog', controllers.Post)
 app.use('/auth', controllers.Auth)

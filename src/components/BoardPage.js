@@ -8,18 +8,12 @@ class BoardPage extends React.Component {
     super(props)
     this.state = {
       newList: false,
-      title: '',
-      cards: {}
     }
   }
   
   handleClick(e){
     e.preventDefault()
     this.toggleNewList()
-  }
-  
-  handleSubmit(e){
-    //this.setState()
   }
   
   handleTitleChange(e){
@@ -47,18 +41,20 @@ class BoardPage extends React.Component {
           {this.state.newList ?
             <List
               {...this.props}
-              handleSubmit={this.handleSubmit.bind(this)}
-              handleTitleChange={this.handleTitleChange.bind(this)}
-              handleCards={this.handleCards.bind(this)}
-              key="newList"/> :
-            <div className="create-list list-wrapper">
-              <div className="list">
-                <a onClick={this.handleClick.bind(this)}>
-                  <i className="fa fa-2x fa-plus plus" aria-hidden="true"></i>
-                </a>
-              </div>
+              handleSubmit={this.handleSubmit}
+              handleTitleKeyDown={this.handleTitleKeyDown}
+              handleTitleChange={this.handleTitleChange}
+              handleCards={this.handleCards}
+              key="newList"/> : 
+            null
+          }
+          <div className="create-list list-wrapper">
+            <div className="list">
+              <a onClick={this.handleClick.bind(this)}>
+                <i className="fa fa-2x fa-plus plus" aria-hidden="true"></i>
+              </a>
             </div>
-          } 
+          </div>
         </div>
       </div>
     )
